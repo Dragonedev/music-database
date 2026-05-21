@@ -1,0 +1,70 @@
+DROP TABLE IF EXISTS stream_log;
+DROP TABLE IF EXISTS music_playlist;
+DROP TABLE IF EXISTS playlist;
+DROP TABLE IF EXISTS music_genre;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS artist_music;
+DROP TABLE IF EXISTS music;
+DROP TABLE IF EXISTS artist;
+DROP TABLE IF EXISTS contact;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	username VARCHAR (100),
+	email VARCHAR (150),
+	age INTEGER,
+	nacionality VARCHAR(50)
+);
+
+CREATE TABLE contact(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	celular VARCHAR(20),
+	users_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE artist(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	artist_name VARCHAR(150)
+);
+
+CREATE TABLE music(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	title VARCHAR (150)
+);
+
+CREATE TABLE artist_music(
+	artist_id INTEGER REFERENCES artist(id),
+	music_id INTEGER REFERENCES music(id),
+	PRIMARY KEY(artist_id, music_id)
+);
+
+CREATE TABLE genre(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	genre VARCHAR(100)
+);
+
+CREATE TABLE music_genre(
+	music_id INTEGER REFERENCES music(id),
+	genre_id INTEGER REFERENCES genre(id),
+	PRIMARY KEY(music_id, genre_id)
+);
+
+CREATE TABLE playlist(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	playlist_name VARCHAR(100),
+	users_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE music_playlist(
+	music_id INTEGER REFERENCES music(id),
+	playlist_id INTEGER REFERENCES playlist(id),
+	PRIMARY KEY (music_id, playlist_id)
+);	
+
+CREATE TABLE stream_log(
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	music_id INTEGER REFERENCES music(id),
+	users_id INTEGER REFERENCES users(id),
+	streamed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
