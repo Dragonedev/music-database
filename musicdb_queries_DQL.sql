@@ -14,4 +14,15 @@ SELECT
 	JOIN artist_music am ON m.id = am.music_id
 	JOIN artist a ON am.artist_id = a.id
 	ORDER BY p.playlist_name;
+
+SELECT 
+	m.title AS music,
+	COUNT(sl.id) AS total_streams
+	FROM music m
+	JOIN stream_log sl ON m.id = sl.music_id
+	GROUP BY m.title
+	ORDER BY total_streams DESC;
+
+
+
 	
