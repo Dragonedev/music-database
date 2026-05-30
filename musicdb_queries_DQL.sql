@@ -58,6 +58,24 @@ SELECT
 	JOIN genre g ON mg.genre_id = g.id
 	GROUP BY u.username, g.genre
 	ORDER BY total_genre DESC;
+
+-- EXIBIR MÚSICAS QUE NUNCA FORAM REPRODUZIDAS
+SELECT
+	m.title AS musica
+	FROM music m
+	LEFT JOIN stream_log sl ON m.id = sl.music_id
+	GROUP BY m.title
+	HAVING COUNT(sl.id) = 0;
+
+-- EXIBIR PLAYLISTS COM A QUANTIDADE TOTAL DE MÚSICAS CADASTRADAS
+
+SELECT
+	p.playlist_name AS titulo,
+	COUNT(mp.music_id) AS quantidade_musicas
+	FROM music_playlist mp
+	JOIN playlist p ON mp.playlist_id = p.id
+	GROUP BY p.playlist_name
+	ORDER BY quantidade_musicas DESC;
 		
 
 
