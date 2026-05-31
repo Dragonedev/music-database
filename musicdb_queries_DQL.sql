@@ -108,6 +108,39 @@ SELECT
 	RIGHT JOIN genre g ON mg.genre_id = g.id
 	GROUP BY g.id
 	ORDER BY total_streams DESC;
+
+-- EXIBIR USUÁRIOS QUE NUNCA CRIARAM UMA PLAYLIST
+
+SELECT 
+	u.username AS nome
+	FROM playlist p
+	RIGHT JOIN users u ON p.users_id = u.id
+	WHERE p.users_id IS NULL
+
+-- EXIBIR MÚSICAS PRESENTES EM MAIS DE UMA PLAYLIST
+
+SELECT
+	m.title AS musica
+	FROM music_playlist mp
+	JOIN music m ON mp.music_id = m.id
+	JOIN playlist p ON mp.playlist_id = p.id
+	GROUP BY m.id
+	HAVING COUNT(m.id) > 1
+	ORDER BY musica
+
+-- EXIBIR ARTISTAS QUE POSSUEM MÚSICAS DE MAIS DE UM GENÊRO
+
+SELECT
+	a.artist_name AS artista
+	FROM artist_music am
+	JOIN artist a ON am.artist_id = a.id
+	JOIN music m ON am.music_id = m.id
+	JOIN music_genre mg ON m.id = mg.music_id
+	JOIN genre g ON mg.genre_id = g.id
+	GROUP BY artista
+	HAVING COUNT(DISTINCT g.id) > 1
+	ORDER BY artista;
+	
 	
 
 
