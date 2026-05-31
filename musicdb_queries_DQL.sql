@@ -76,8 +76,41 @@ SELECT
 	JOIN playlist p ON mp.playlist_id = p.id
 	GROUP BY p.playlist_name
 	ORDER BY quantidade_musicas DESC;
-		
+
+-- EXIBIR OS ARTISTAS COM A QUANTIDADE DE MÚSICAS CADASTRADAS
+
+SELECT
+	a.artist_name AS nome,
+	COUNT(am.artist_id) AS total_musicas
+	FROM artist_music am
+	JOIN artist a ON am.artist_id = a.id
+	GROUP BY a.id
+	ORDER BY total_musicas DESC;
+
+-- EXIBIR OS USUÁRIOS QUE POSSUEM MAIS PLAYLIST CADASTRADAS
+
+SELECT
+	u.username AS nome,
+	COUNT(p.users_id) AS total_playlist
+	FROM playlist p
+	RIGHT JOIN users u ON p.users_id = u.id
+	GROUP BY u.id
+	ORDER BY total_playlist DESC;
+
+-- EXIBIR OS GENÊROS MUSICAIS MAIS OUVIDOS PELOS USUÁRIOS
+
+SELECT
+	g.genre AS genero,
+	COUNT(mg.genre_id) AS total_streams
+	FROM stream_log sl
+	JOIN music m ON sl.music_id = m.id
+	JOIN music_genre mg ON m.id = mg.music_id
+	RIGHT JOIN genre g ON mg.genre_id = g.id
+	GROUP BY g.id
+	ORDER BY total_streams DESC;
+	
 
 
+	
 
 	
